@@ -1,0 +1,17 @@
+{
+    "data": {
+        "browseable": true,
+        "downloadRemoteIndexes": false,
+        "exposed": true,
+        "format": "maven2",
+        "id": "petclinic",
+        "indexable": true,
+        "name": "aabgPetclinc",
+        "notFoundCacheTTL": 1440,
+        "provider": "maven2",
+        "providerRole": "org.sonatype.nexus.proxy.repository.Repository",
+        "repoPolicy": "RELEASE",
+        "repoType": "hosted",
+        "writePolicy": "ALLOW_WRITE"
+    }
+}

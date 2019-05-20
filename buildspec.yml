@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - apt-get install -y openjdk-8-jdk python-pip
+      - update-java-alternatives -s java-1.8.0-openjdk-amd64
+      # Upgrade AWS CLI to the latest version
+      - pip install --upgrade awscli pip
+  pre_build:
+    commands:
+      - chmod -R +x ./scripts/*
+      - ./scripts/nexus_repository.sh
+  build:    
+    commands:
+      - mvn package
+  post_build:
+    commands:
+      - 'curl -v -F r=petclinic -F hasPom=false -F e=jar -F g=com.accenture -F a=petclinic -F v=2.1.0 -F p=jar -F file=@./target/spring-petclinic-2.1.0.BUILD-SNAPSHOT.jar -u admin:admin123  $NEXUS_URL/service/local/artifact/maven/content'
+      - chmod -R +x ./scripts/*
+      - ./scripts/generate_sq_token.sh
+      - mvn sonar:sonar -Dsonar.login=${SONAR_AUTH_TOKEN} -Dsonar.host.url=${SONARQUBE_URL}
+      
+artifacts:
+  type: zip
+  files:
+    - 'appspec.yml'
+#    - 'template.yml'
+    - 'scripts/*'
+    - 'target/*.jar'
+#    - 'template-configuration.json'

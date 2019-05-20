@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: target/
+    destination: /home/ec2-user/javaapp/
+hooks:
+  BeforeInstall:
+    - location: scripts/stop_server.sh
+      timeout: 60
+  AfterInstall:
+    - location: scripts/start_server.sh
+      timeout: 60
+    - location: scripts/RunResourceTests.sh
+      timeout: 180
